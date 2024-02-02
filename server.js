@@ -22,3 +22,31 @@ app.get('/contacts', (req, res) => {
         data: contacts
     });
 });
+
+
+app.post('/contacts', (req, res) => {
+    const { name } = req.body;
+
+    if (!name) {
+        return res.status(400).json({
+            success: false,
+            message: 'Error',
+            errors: [
+                {
+                    field: 'name',
+                    message: "can't be null"
+                }
+            ]
+        });
+    }
+    const newContact = {
+        id: (contacts.length + 1).toString(),
+        name: name
+    };
+    contacts.push(newContact);
+    res.status(201).json({
+        success: true,
+        message: 'Data added successfully',
+        data: newContact
+    });
+});
