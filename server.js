@@ -62,3 +62,48 @@ app.delete('/contacts/:id', (req, res) => {
         message: 'Data deleted successfully'
     });
 });
+
+
+app.put('/contacts/:id', (req, res) => {
+    const id = req.params.id;
+    const { name } = req.body;
+
+    if (!name) {
+        return res.status(400).json({
+            success: false,
+            message: 'Error',
+            errors: [
+                {
+                    field: 'name',
+                    message: "can't be null"
+                }
+            ]
+        });
+    }
+
+    const index = contacts.findIndex(contact => contact.id === id);
+
+    if (index === -1) {
+        return res.status(404).json({
+            success: false,
+            message: 'Error',
+            errors: [
+                {
+                    field: 'id',
+                    message: 'Contact not found'
+                }
+            ]
+        });
+    }
+
+    contacts[index] = {
+        ...contacts[index],
+        name: name
+    };
+
+    res.json({
+        success: true,
+        message: 'Data updated successfully',
+        data: contacts[index]
+    });
+});
