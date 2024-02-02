@@ -50,3 +50,15 @@ app.post('/contacts', (req, res) => {
         data: newContact
     });
 });
+
+
+
+app.delete('/contacts/:id', (req, res) => {
+    const id = req.params.id;
+    contacts = contacts.filter(contact => contact.id !== id);
+
+    res.json({
+        success: true,
+        message: 'Data deleted successfully'
+    });
+});
